@@ -7,11 +7,9 @@
     <persistence-unit name="hamburgeria-pu">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.hamburgeria.model.Utente</class>
-        <class>com.hamburgeria.model.Ordine</class>
-        <class>com.hamburgeria.model.Prodotto</class>
-        <class>com.hamburgeria.model.Ingrediente</class>
-        <class>com.hamburgeria.model.OrdineProdotto</class>
-        <class>com.hamburgeria.model.ProdottoIngrediente</class>
+        <class>com.hamburgeria.model.Zona</class>
+        <class>com.hamburgeria.model.Animale</class>
+        <class>com.hamburgeria.model.UtenteZona</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/hamburgeria_db?serverTimezone=UTC"/>

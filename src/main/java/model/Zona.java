@@ -1,10 +1,13 @@
 package model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,11 +19,15 @@ public class Zona {
 	@Column(name = "id_zona")
 	private Long idZona;
 	
-	@Column(name = "nome")
+	@Column(name = "nome", nullable = false)
 	private String nome;
 	
-	@Column(name = "area")
+	@Column(name = "area", nullable = false)
 	private Double area;
+	
+	// Non c'è il CASCADE perchè se elimino una zona non devono essere eliminati anche gli animali contenuti in quella zona
+	@OneToMany(mappedBy = "zona")
+	private List<Animale> animali;
 	
 	public Zona() {
 		

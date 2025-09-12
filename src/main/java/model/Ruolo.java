@@ -1,5 +1,5 @@
 package model;
 
 public enum Ruolo {
-	admin, dipendente,
+	admin, dipendente
 }
