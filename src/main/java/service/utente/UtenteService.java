@@ -7,6 +7,7 @@ import dao.utente.UtenteDao;
 import dao.zona.ZonaDao;
 import jakarta.persistence.EntityManager;
 import model.Animale;
+import model.Ruolo;
 import model.Utente;
 import model.Zona;
 import service.IBaseService;
@@ -76,7 +77,7 @@ public class UtenteService implements IBaseService<Utente, Long>{
 		}
 	}
 	
-	//Funzioni di business
+	//Funzioni di business per animali
 	public boolean spostaAnimale(Animale a, Zona z) {
 		
 		try {
@@ -86,6 +87,7 @@ public class UtenteService implements IBaseService<Utente, Long>{
 			z.getAnimali().add(a); 				//Nella nuova zona aggiungo l'animale
 			if(a.getZona() == z) {//Verifico se la nuova zona dell'animale corrisponde alla zona passata come parametro
 				this.animaleDao.merge(a);
+				this.zonaDao.merge(z);
 				this.em.getTransaction().commit();
 				return true;
 			}
@@ -120,6 +122,7 @@ public class UtenteService implements IBaseService<Utente, Long>{
 			this.em.getTransaction().begin();
 			z.getAnimali().remove(a);
 			this.animaleDao.remove(a);
+			this.zonaDao.merge(z);
 			this.em.getTransaction().commit();
 			return true;
 		}catch(Exception e) {
@@ -141,6 +144,55 @@ public class UtenteService implements IBaseService<Utente, Long>{
 		return this.animaleDao.findAll();
 	}
 	
+	//Funzioni di business per Admin
+	public boolean registraDipendete(Utente admin, Utente daRegistrare) {
+		if (admin.getRuolo() == Ruolo.admin) {
+			try {
+				this.em.getTransaction().begin();
+				this.utenteDao.persist(daRegistrare);
+				this.em.getTransaction().commit();
+				return true;
+			} catch (Exception e) {
+				this.em.getTransaction().rollback();
+				e.printStackTrace();
+			} 
+		}
+		return false;
+	}
 	
+	public boolean disattivaDipendente(Utente admin, Utente daDisattivare) {
+		if(admin.getRuolo() == Ruolo.admin) {
+			try {
+				this.em.getTransaction().begin();
+				daDisattivare.setStato(false);
+				this.utenteDao.merge(daDisattivare);
+				this.em.getTransaction().commit();
+				return true;
+			} catch (Exception e) {
+				this.em.getTransaction().rollback();
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	public boolean rimuoviDipendente(Utente admin, Utente daRimuovere) {
+		if(admin.getRuolo() == Ruolo.admin) {
+			try {
+				this.em.getTransaction().begin();
+				this.utenteDao.remove(daRimuovere);
+				this.em.getTransaction().commit();
+				return true;
+			}catch(Exception e) {
+				this.em.getTransaction().rollback();
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	public boolean assegnaZonaDipendente(Utente admin, Utente daAssegnare, Zona zona) {
+		TODO
+	}
 
 }
