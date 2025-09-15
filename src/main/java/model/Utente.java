@@ -1,10 +1,13 @@
 package model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,6 +33,13 @@ public class Utente {
 	
 	@Column(name = "ruolo", nullable = false)
 	private Ruolo ruolo;
+	
+	@Column(name = "stato", nullable = false)
+	private boolean stato;
+	
+	//Collegamento alla tabella di join utente_zona
+	@OneToMany(mappedBy = "utente")
+	private List<UtenteZona> utentiZone;
 	
 	public Utente() {
 		
@@ -100,6 +110,16 @@ public class Utente {
 
 	public void setRuolo(Ruolo ruolo) {
 		this.ruolo = ruolo;
+	}
+	
+	
+
+	public boolean isStato() {
+		return stato;
+	}
+
+	public void setStato(boolean stato) {
+		this.stato = stato;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +29,10 @@ public class Zona {
 	// Non c'è il CASCADE perchè se elimino una zona non devono essere eliminati anche gli animali contenuti in quella zona
 	@OneToMany(mappedBy = "zona")
 	private List<Animale> animali;
+	
+	//Collegamento alla tabella di join utente_zona
+		@OneToMany(mappedBy = "zona")
+		private List<UtenteZona> utentiZone;
 	
 	public Zona() {
 		
@@ -68,11 +73,43 @@ public class Zona {
 	public void setArea(Double area) {
 		this.area = area;
 	}
+	
+	
+
+	public List<Animale> getAnimali() {
+		return animali;
+	}
+
+	public void setAnimali(List<Animale> animali) {
+		this.animali = animali;
+	}
 
 	@Override
 	public String toString() {
-		return "Zona [idZona=" + idZona + ", nome=" + nome + ", area=" + area + "]";
+		return "	ID: " + this.idZona + "\n"
+		    	+ "    Nome: " + this.nome + "\n"
+		    	+ "    Area: " + this.area + " mq \n";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(animali, area, idZona, nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Zona other = (Zona) obj;
+		return Objects.equals(animali, other.animali) && Objects.equals(area, other.area)
+				&& Objects.equals(idZona, other.idZona) && Objects.equals(nome, other.nome);
+	}
+	
+	
 	
 	
 	

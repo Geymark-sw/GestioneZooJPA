@@ -2,19 +2,27 @@ package service.utente;
 
 import java.util.List;
 
+import dao.animale.AnimaleDao;
 import dao.utente.UtenteDao;
+import dao.zona.ZonaDao;
 import jakarta.persistence.EntityManager;
+import model.Animale;
 import model.Utente;
+import model.Zona;
 import service.IBaseService;
 
 public class UtenteService implements IBaseService<Utente, Long>{
 	
 	private final EntityManager em;
 	private final UtenteDao utenteDao;
+	private final AnimaleDao animaleDao;
+	private final ZonaDao zonaDao;
 	
-	public UtenteService(EntityManager em, UtenteDao utenteDao) {
+	public UtenteService(EntityManager em, UtenteDao utenteDao, AnimaleDao animaleDao, ZonaDao zonaDao) {
 		this.em = em;
 		this.utenteDao = utenteDao;
+		this.animaleDao = animaleDao;
+		this.zonaDao = zonaDao;
 	}
 
 	@Override
@@ -67,5 +75,72 @@ public class UtenteService implements IBaseService<Utente, Long>{
 			this.em.getTransaction().rollback();
 		}
 	}
+	
+	//Funzioni di business
+	public boolean spostaAnimale(Animale a, Zona z) {
+		
+		try {
+			this.em.getTransaction().begin();
+			a.getZona().getAnimali().remove(a); //Rimuovo dalla zona iniziale l'animale
+			a.setZona(z); 						//Setto la nuova zona dell'animale
+			z.getAnimali().add(a); 				//Nella nuova zona aggiungo l'animale
+			if(a.getZona() == z) {//Verifico se la nuova zona dell'animale corrisponde alla zona passata come parametro
+				this.animaleDao.merge(a);
+				this.em.getTransaction().commit();
+				return true;
+			}
+		} catch (Exception e) {
+			this.em.getTransaction().rollback();
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
+	
+	public boolean aggiungiAnimale(Animale a, Zona z) {
+		
+		try {
+			this.em.getTransaction().begin();
+			a.setZona(z);
+			z.getAnimali().add(a);
+			animaleDao.persist(a);
+			zonaDao.merge(z);
+			this.em.getTransaction().commit();
+			return true;
+			} catch (Exception e) {
+				this.em.getTransaction().rollback();
+				e.printStackTrace();
+		}
+		return false;
+		
+	}
+	
+	public boolean rimuoviAnimale(Animale a, Zona z) {
+		try {
+			this.em.getTransaction().begin();
+			z.getAnimali().remove(a);
+			this.animaleDao.remove(a);
+			this.em.getTransaction().commit();
+			return true;
+		}catch(Exception e) {
+			this.em.getTransaction().rollback();
+		}
+		return false;
+	}
+	
+	public Animale trovaAnimale(Long id) {
+		return this.animaleDao.findById(id);
+	}
+	
+	public List<Animale> visualizzaAnimaliPerZona(Zona z){
+		return z.getAnimali();
+		
+	}
+	
+	public List<Animale> visualizzaTuttiAnimali(){
+		return this.animaleDao.findAll();
+	}
+	
+	
 
 }
