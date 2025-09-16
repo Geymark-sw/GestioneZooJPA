@@ -11,6 +11,7 @@ public class FunzioniUtils {
 		String email = "";
 		do {
 			try {
+				System.out.println("Inserisci l'email:");
 				email = input.nextLine();
 				if(!Pattern.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", email)) {
 					System.out.println("L'email che hai inserito non ha un formato valido, riprova.");

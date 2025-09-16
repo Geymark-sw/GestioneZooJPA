@@ -67,5 +67,11 @@ public class ZonaService implements IBaseService<Zona, Long>{
 			this.em.getTransaction().rollback();
 		}
 	}
+	
+	public Zona findByNome(String nomeZona) {
+		return this.em.createQuery("FROM zona z WHERE z.nome = :nomeZona", Zona.class)
+				.setParameter("nomeZona", nomeZona)
+				.getResultStream().findFirst().orElse(null);	
+	}
 
 }

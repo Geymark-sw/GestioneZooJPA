@@ -4,20 +4,21 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
 
-    <persistence-unit name="hamburgeria-pu">
+    <persistence-unit name="gestione_zoo" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>com.hamburgeria.model.Utente</class>
-        <class>com.hamburgeria.model.Zona</class>
-        <class>com.hamburgeria.model.Animale</class>
-        <class>com.hamburgeria.model.UtenteZona</class>
+        <class>model.Utente</class>
+        <class>model.Zona</class>
+        <class>model.Animale</class>
+        <class>model.UtenteZona</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/hamburgeria_db?serverTimezone=UTC"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestione_zoo"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
-            <property name="jakarta.persistence.jdbc.password" value="your_password"/>
-
+            <property name="jakarta.persistence.jdbc.password" value="root"/>
+			
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/> </properties>
+            <property name="hibernate.hbm2ddl.auto" value="update"/> </properties>
     </persistence-unit>
 </persistence>

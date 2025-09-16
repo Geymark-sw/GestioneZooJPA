@@ -84,7 +84,7 @@ public class Animale {
 		return razza;
 	}
 
-	public void setNomeTipo(String razza) {
+	public void setRazza(String razza) {
 		this.razza = razza;
 	}
 
