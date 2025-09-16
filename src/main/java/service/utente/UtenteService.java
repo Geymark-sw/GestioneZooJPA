@@ -4,11 +4,12 @@ import java.util.List;
 
 import dao.animale.AnimaleDao;
 import dao.utente.UtenteDao;
+import dao.utenteZona.UtenteZonaDao;
 import dao.zona.ZonaDao;
 import jakarta.persistence.EntityManager;
 import model.Animale;
-import model.Ruolo;
 import model.Utente;
+import model.UtenteZona;
 import model.Zona;
 import service.IBaseService;
 
@@ -18,12 +19,14 @@ public class UtenteService implements IBaseService<Utente, Long>{
 	private final UtenteDao utenteDao;
 	private final AnimaleDao animaleDao;
 	private final ZonaDao zonaDao;
+	private final UtenteZonaDao utenteZonaDao;
 	
-	public UtenteService(EntityManager em, UtenteDao utenteDao, AnimaleDao animaleDao, ZonaDao zonaDao) {
+	public UtenteService(EntityManager em, UtenteDao utenteDao, AnimaleDao animaleDao, ZonaDao zonaDao, UtenteZonaDao utenteZonaDao) {
 		this.em = em;
 		this.utenteDao = utenteDao;
 		this.animaleDao = animaleDao;
 		this.zonaDao = zonaDao;
+		this.utenteZonaDao = utenteZonaDao;
 	}
 
 	@Override
@@ -145,8 +148,7 @@ public class UtenteService implements IBaseService<Utente, Long>{
 	}
 	
 	//Funzioni di business per Admin
-	public boolean registraDipendete(Utente admin, Utente daRegistrare) {
-		if (admin.getRuolo() == Ruolo.admin) {
+	public boolean registraDipendete(Utente daRegistrare) {
 			try {
 				this.em.getTransaction().begin();
 				this.utenteDao.persist(daRegistrare);
@@ -156,12 +158,11 @@ public class UtenteService implements IBaseService<Utente, Long>{
 				this.em.getTransaction().rollback();
 				e.printStackTrace();
 			} 
-		}
+		
 		return false;
 	}
 	
-	public boolean disattivaDipendente(Utente admin, Utente daDisattivare) {
-		if(admin.getRuolo() == Ruolo.admin) {
+	public boolean disattivaDipendente(Utente daDisattivare) {
 			try {
 				this.em.getTransaction().begin();
 				daDisattivare.setStato(false);
@@ -172,12 +173,10 @@ public class UtenteService implements IBaseService<Utente, Long>{
 				this.em.getTransaction().rollback();
 				e.printStackTrace();
 			}
-		}
 		return false;
 	}
 	
-	public boolean rimuoviDipendente(Utente admin, Utente daRimuovere) {
-		if(admin.getRuolo() == Ruolo.admin) {
+	public boolean rimuoviDipendente(Utente daRimuovere) {
 			try {
 				this.em.getTransaction().begin();
 				this.utenteDao.remove(daRimuovere);
@@ -187,12 +186,21 @@ public class UtenteService implements IBaseService<Utente, Long>{
 				this.em.getTransaction().rollback();
 				e.printStackTrace();
 			}
+		return false;
+	}
+	
+	public boolean assegnaZonaDipendente(Utente daAssegnare, Zona zona) {
+		
+		try {
+			this.em.getTransaction().begin();
+			UtenteZona uz = new UtenteZona(daAssegnare, zona); 
+			this.utenteZonaDao.persist(uz);
+			this.em.getTransaction().commit();
+			return true;
+		}catch(Exception e) {
+			this.em.getTransaction().rollback();
 		}
 		return false;
 	}
 	
-	public boolean assegnaZonaDipendente(Utente admin, Utente daAssegnare, Zona zona) {
-		TODO
-	}
-
 }

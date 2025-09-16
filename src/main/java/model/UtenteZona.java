@@ -24,6 +24,24 @@ public class UtenteZona {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_zona", nullable = false)
 	private Zona zona;
+	
+
+	public UtenteZona() {
+		super();
+	}
+
+	public UtenteZona(Utente utente, Zona zona) {
+		super();
+		this.utente = utente;
+		this.zona = zona;
+	}
+
+	public UtenteZona(Long idUtenteZona, Utente utente, Zona zona) {
+		super();
+		this.idUtenteZona = idUtenteZona;
+		this.utente = utente;
+		this.zona = zona;
+	}
 
 	public Long getIdUtenteZona() {
 		return idUtenteZona;

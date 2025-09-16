@@ -127,6 +127,14 @@ public class Utente {
 		return "Utente [idUtente=" + idUtente + ", nome=" + nome + ", cognome=" + cognome + ", email=" + email
 				+ ", password=" + password + ", ruolo=" + ruolo + "]";
 	}
+
+	public List<UtenteZona> getUtentiZone() {
+		return utentiZone;
+	}
+
+	public void setUtentiZone(List<UtenteZona> utentiZone) {
+		this.utentiZone = utentiZone;
+	}
 	
 	
 	
