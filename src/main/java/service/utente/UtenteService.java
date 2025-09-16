@@ -80,6 +80,12 @@ public class UtenteService implements IBaseService<Utente, Long>{
 		}
 	}
 	
+	public Utente findByEmail(String email) {
+		return this.em.createQuery("FROM utente u WHERE u.email = :email", Utente.class)
+				.setParameter("email", email)
+				.getResultStream().findFirst().orElse(null);
+	}
+	
 	//Funzioni di business per animali
 	public boolean spostaAnimale(Animale a, Zona z) {
 		
