@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.Animale;
-import model.Ruolo;
+import model.String;
 import model.Utente;
 import model.Zona;
 import service.utente.UtenteService;
@@ -27,9 +27,9 @@ public class Main {
 		System.out.println("-- Effettua l'accesso --");
 		login();
 		
-		if(utente.getRuolo() == Ruolo.dipendente) {
+		if(utente.getRuolo() == String) {
 			funzioniDipendente();
-		}else if(utente.getRuolo() == Ruolo.admin) {
+		}else if(utente.getRuolo() == String.admin) {
 			funzionAdmin();
 		}
 		
@@ -41,7 +41,7 @@ public class Main {
 	}
 
 	private static void funzioniDipendente() {
-		int scelta;
+		int scelta;  
 		String exit = "";
 		do {
 			System.out.println("Ecco le operazioni che puoi eseguire, scegline una:");

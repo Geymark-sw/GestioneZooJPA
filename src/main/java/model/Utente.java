@@ -32,7 +32,7 @@ public class Utente {
 	private String password;
 	
 	@Column(name = "ruolo", nullable = false)
-	private Ruolo ruolo;
+	private String ruolo;
 	
 	@Column(name = "stato", nullable = false)
 	private boolean stato;
@@ -45,7 +45,7 @@ public class Utente {
 		
 	}
 
-	public Utente(Long idUtente, String nome, String cognome, String email, String password, Ruolo ruolo) {
+	public Utente(Long idUtente, String nome, String cognome, String email, String password, String ruolo) {
 		super();
 		this.idUtente = idUtente;
 		this.nome = nome;
@@ -55,7 +55,7 @@ public class Utente {
 		this.ruolo = ruolo;
 	}
 
-	public Utente(String nome, String cognome, String email, String password, Ruolo ruolo) {
+	public Utente(String nome, String cognome, String email, String password, String ruolo) {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
@@ -104,11 +104,11 @@ public class Utente {
 		this.password = password;
 	}
 
-	public Ruolo getRuolo() {
+	public String getRuolo() {
 		return ruolo;
 	}
 
-	public void setRuolo(Ruolo ruolo) {
+	public void setRuolo(String ruolo) {
 		this.ruolo = ruolo;
 	}
 	
@@ -123,7 +123,7 @@ public class Utente {
 	}
 
 	@Override
-	public String toString() {
+	public	String toString() {
 		return "Utente [idUtente=" + idUtente + ", nome=" + nome + ", cognome=" + cognome + ", email=" + email
 				+ ", password=" + password + ", ruolo=" + ruolo + "]";
 	}
